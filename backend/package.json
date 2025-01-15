@@ -1,0 +1,15 @@
+{
+	"author": "Simba Mapisa",
+	"dependencies": {
+		"express": "^4.21.2"
+	},
+	"description": "",
+	"license": "ISC",
+	"main": "server.js",
+	"name": "backend",
+	"scripts": {
+		"dev": "node --trace-warnings --watch  server.js"
+	},
+	"type": "module",
+	"version": "1.0.0"
+}
