@@ -2,6 +2,7 @@ import express from 'express';
 import User from '../../models/user.js';
 import bcrypt from 'bcrypt';
 import { clerkClient, getAuth, requireAuth } from '@clerk/express';
+import logger from '../../logger.js';
 
 const salt = 10;
 
@@ -46,6 +47,12 @@ router.post('/register', async (req, res) => {
 	const newUser = new User({ name, email, password: hashedPassword });
 	await newUser.save();
 	return res.status(200).json({ message: 'Register success! Please login.' });
+});
+
+router.get('/users', async (req, res) => {
+	logger.info('Getting all users');
+	const users = await User.find();
+	return res.status(200).json(users);
 });
 
 export default router;
