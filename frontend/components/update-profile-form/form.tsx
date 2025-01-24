@@ -82,7 +82,7 @@ export default function MyForm() {
 	}
 
 	return (
-		<div className='wrapper container shadow-2xl shadow-slate-300 border border-slate-200 rounded-lg bg-white max-w-2xl mx-auto py-10 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+		<div className='wrapper container shadow-2xl shadow-slate-300 border border-slate-200 rounded-lg bg-white max-w-2xl mx-auto p-10 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
 			<div className='form-header'>
 				<div className='logo mb-8'>
 					<Image
@@ -124,7 +124,7 @@ export default function MyForm() {
 					<div className=''>
 						<p>{studentTutor}</p>
 						<div>
-							<div className='student-tutor-registration'>
+							<div className='student-tutor-registration pb-4'>
 								<RadioGroup
 									onValueChange={handleRegistration}
 									defaultValue={studentTutor}
