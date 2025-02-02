@@ -37,7 +37,7 @@ import { toast } from 'sonner';
 import * as z from 'zod';
 import { PhoneInput } from '../phone';
 
-const labelColors = 'text-blue-500 pt-4';
+const labelColors = 'text-neutralSP-900 pt-4';
 
 const formSchema = z.object({
 	name_4500651209: z.string(),
@@ -64,8 +64,7 @@ export default function MyForm() {
 		setStudentTutor(value);
 	};
 
-	const isStudent =
-		studentTutor === 'student' ? 'School Name' : 'Languages Spoken';
+	const isStudent = studentTutor === 'student' ? 'School Name' : 'Languages Spoken';
 	function onSubmit(values: z.infer<typeof formSchema>) {
 		try {
 			console.log(values);
@@ -82,7 +81,7 @@ export default function MyForm() {
 	}
 
 	return (
-		<div className='wrapper container shadow-2xl shadow-slate-300 border border-slate-200 rounded-lg bg-white max-w-2xl mx-auto p-10 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+		<div className='wrapper container shadow-2xl shadow-slate-300 border border-slate-200 rounded-lg bg-white max-w-2xl mx-auto p-10 '>
 			<div className='form-header'>
 				<div className='logo mb-8'>
 					<Image
@@ -121,8 +120,7 @@ export default function MyForm() {
 				<form
 					onSubmit={form.handleSubmit(onSubmit)}
 					className='space-y-8 max-w-2xl mx-auto py-10'>
-					<div className=''>
-						<p>{studentTutor}</p>
+					<div className='space-y-1 max-w-2xl mx-auto'>
 						<div>
 							<div className='student-tutor-registration pb-4'>
 								<RadioGroup
@@ -169,24 +167,21 @@ export default function MyForm() {
 									name='name_6286633892'
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>Email</FormLabel>
+											<FormLabel>Gender</FormLabel>
 											<Select
 												onValueChange={field.onChange}
 												defaultValue={field.value}>
 												<FormControl>
 													<SelectTrigger>
-														<SelectValue placeholder='Select a verified email to display' />
+														<SelectValue placeholder='Select your gender' />
 													</SelectTrigger>
 												</FormControl>
 												<SelectContent>
-													<SelectItem value='m@example.com'>
-														m@example.com
+													<SelectItem value='male'>
+														Male
 													</SelectItem>
-													<SelectItem value='m@google.com'>
-														m@google.com
-													</SelectItem>
-													<SelectItem value='m@support.com'>
-														m@support.com
+													<SelectItem value='female'>
+														Female
 													</SelectItem>
 												</SelectContent>
 											</Select>
