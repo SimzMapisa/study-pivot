@@ -1,38 +1,45 @@
 'use client';
 
-import * as React from 'react';
 import Link from 'next/link';
+import * as React from 'react';
 // import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
-
 import {
-	Menu,
-	X,
-	BookOpen,
-	Users,
-	MessageSquare,
-	ShoppingBag,
-	Library,
-	GraduationCap,
-	Calendar,
-	Video,
-	Newspaper,
-	Lightbulb,
-} from 'lucide-react';
+	SignInButton,
+	SignedIn,
+	SignedOut,
+	UserButton,
+	useUser,
+} from '@clerk/nextjs';
+import { AnimatePresence, motion } from 'framer-motion';
+
 import {
 	Accordion,
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
 } from '@/components/ui/accordion';
+import {
+	BookOpen,
+	Calendar,
+	GraduationCap,
+	Library,
+	Lightbulb,
+	Menu,
+	MessageSquare,
+	Newspaper,
+	ShoppingBag,
+	Users,
+	Video,
+	X,
+} from 'lucide-react';
 import Image from 'next/image';
 
 const MegaMenu = () => {
 	const [activeMenu, setActiveMenu] = React.useState<string | null>(null);
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+	const { user } = useUser();
 
 	const menuItems = [
 		{ title: 'Study', icon: <BookOpen className='w-5 h-5' /> },
@@ -54,7 +61,8 @@ const MegaMenu = () => {
 									alt='StudyPlatform'
 									width={200}
 									height={50}
-									className='w-auto h-10'/>
+									className='w-auto h-10'
+								/>
 							</span>
 						</Link>
 						<div className='hidden md:ml-6 md:flex md:space-x-8'>
@@ -77,6 +85,7 @@ const MegaMenu = () => {
 								</Button>
 							</SignedOut>
 							<SignedIn>
+								<span className='mr-1 textbase font-medium text-neutral-500'>{`Hello, ${user?.firstName}`}</span>
 								<UserButton />
 							</SignedIn>
 						</>
@@ -132,6 +141,7 @@ const MegaMenu = () => {
 										</AccordionItem>
 									))}
 								</Accordion>
+
 								<div className='mt-6 space-y-4'>
 									<>
 										<SignedOut>

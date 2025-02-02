@@ -1,11 +1,13 @@
 'use client';
 
+import { useUser } from '@clerk/nextjs';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import Stat from '../stat';
 
 function Header() {
+	const { isSignedIn, user } = useUser();
 	return (
 		<header className='lg:min-h-[800px] flex items-center justify-center relative bg-gradient-to-b from-gray-100 to-gray-200'>
 			<div className='w-full max-w-7xl mx-auto grid lg:grid-cols-2 gap-12'>
@@ -124,11 +126,19 @@ function Header() {
 							initial={{ opacity: 0, y: 20 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: 0.6 }}>
-							<Link
-								href='/sign-up'
-								className='px-6 py-3 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors shadow-lg hover:shadow-xl text-lg font-semibold'>
-								Start Learning
-							</Link>
+							{isSignedIn ? (
+								<Link
+									href='/dashboard'
+									className='px-6 py-3 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors shadow-lg hover:shadow-xl text-lg font-semibold'>
+									{`${user.firstName}'s Dashboard`}
+								</Link>
+							) : (
+								<Link
+									href='/sign-up'
+									className='px-6 py-3 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors shadow-lg hover:shadow-xl text-lg font-semibold'>
+									Start Learning
+								</Link>
+							)}
 							<Link
 								href='/about'
 								className='px-6 py-3 border-2 border-primary text-primary rounded-md hover:bg-primary/10 transition-colors text-lg font-semibold'>
