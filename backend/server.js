@@ -1,21 +1,27 @@
+import { clerkMiddleware } from '@clerk/express';
+import dotenv from 'dotenv';
 import express from 'express';
 import { connectDB } from './config/db.js';
 import userRoutes from './routes/user/index.js';
-import { clerkMiddleware } from '@clerk/express';
-import dotenv from 'dotenv';
 
-import logger from './logger.js';
+import cors from 'cors';
 import morgan from 'morgan';
-
+import logger from './logger.js';
 const morganFormat = ':method :url :status :response-time ms';
 
 // configure dotenv
 dotenv.config();
 
+const corsOptions = {
+	origin: 'http://localhost:3000',
+	credentials: true,
+};
 const app = express();
+
 connectDB();
 
 // Middleware
+app.use(clerkMiddleware());
 app.use(
 	morgan(morganFormat, {
 		stream: {
@@ -31,7 +37,7 @@ app.use(
 		},
 	})
 );
-app.use(clerkMiddleware());
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Routes

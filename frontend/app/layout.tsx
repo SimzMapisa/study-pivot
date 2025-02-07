@@ -4,8 +4,8 @@ import './globals.css';
 
 import MegaMenu from '@/components/header/menu';
 
-import { ClerkProvider } from '@clerk/nextjs';
 import Footer from '@/components/footer';
+import { ClerkProvider } from '@clerk/nextjs';
 
 const geistSans = Geist({
 	variable: '--font-geist-sans',
@@ -33,7 +33,7 @@ export default async function RootLayout({
 				<body
 					className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#F9FAFB]`}>
 					<MegaMenu />
-					<div className='min-h-screen'>{children}</div>
+					<div className='min-h-screen '>{children}</div>
 					<Footer />
 				</body>
 			</html>
