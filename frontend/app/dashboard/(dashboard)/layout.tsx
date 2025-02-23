@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import "../../globals.css";
 
-import { ClerkProvider } from "@clerk/nextjs";
+import Nav from "@/components/dashboard/nav";
+import Footer from "@/components/dashboard/footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,14 +26,16 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#F9FAFB]`}
-        >
-          <div className="min-h-screen ">{children}</div>
-        </body>
-      </html>
-    </ClerkProvider>
+    <div
+      className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 flex`}
+    >
+      <Nav />
+      <div className="flex my-4 flex-col max-h-screen px-4 border-x-2 border-slate-100 lg:w-[1500px]  lg:max-w-[1500px] mx-auto">
+        <div className="h-[100%]">{children}</div>
+        <div>
+          <Footer />
+        </div>
+      </div>
+    </div>
   );
 }
