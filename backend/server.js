@@ -23,7 +23,7 @@ app.use(
 		cookie: {
 			secure: false,
 			httpOnly: true,
-			maxAge: 7000,
+			maxAge: 1000 * 60 * 60 * 24 * 7,
 		},
 	})
 );
