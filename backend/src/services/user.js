@@ -27,29 +27,6 @@ const userServices = {
 		}
 	},
 
-	login: async (email, password) => {
-		try {
-			const user = await prisma.user.findUnique({
-				where: { email },
-			});
-			if (!user) {
-				return { error: 'User not found' };
-			}
-			const isPasswordValid = await passwordUtil.comparePassword(
-				password,
-				user.password
-			);
-			if (!isPasswordValid) {
-				return { error: 'Invalid email and password combination' };
-			}
-
-			return user;
-		} catch (error) {
-			console.error('Error logging in user:', error);
-			throw new Error('Internal Server Error');
-		}
-	},
-
 	getUsers: async () => {
 		try {
 			const users = await prisma.user.findMany();
