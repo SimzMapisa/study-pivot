@@ -22,18 +22,6 @@ const userController = {
 			next();
 		}
 	},
-
-	login: async (req, res, next) => {
-		const { email, password } = req.body;
-
-		const user = await userServices.login(email, password);
-
-		if (user.error) {
-			return res.status(400).json({ error: user.error });
-		}
-		res.status(200).json(user);
-		next();
-	},
 };
 
 export default userController;
