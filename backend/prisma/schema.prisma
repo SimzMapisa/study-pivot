@@ -9,8 +9,155 @@ generator client {
 
 model User {
   id        String   @id @default(uuid()) @unique
+  name      String
+  surname   String
   email     String   @unique
-  name      String?
   password  String
+  avatar    String?
+  status    UserStatus @default(ACTIVE)
+  role      UserRole   @default(STUDENT)
+  isOnboarded Boolean  @default(false)
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  studentProfile StudentProfile?
+  tutorProfile  TutorProfile?
+  adminProfile  AdminProfile?
+  bio          Bio?
+  address      Address?
+  passwordResetTokens PasswordResetToken[]
+  sentFriendRequests     Friendship[] @relation("SentFriendRequests")
+  receivedFriendRequests Friendship[] @relation("ReceivedFriendRequests")
+}
+
+model StudentProfile {
+  id        String   @id @default(uuid()) @unique
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  subjects  Subject[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TutorProfile {
+  id          String    @id @default(uuid()) @unique
+  userId      String    @unique
+  user        User      @relation(fields: [userId], references: [id])
+  subjects    Subject[]
+  experience  Int?
+  hourlyRate  Decimal?
+  ratings     Rating[]
+  avgRating   Float     @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model AdminProfile {
+  id        String   @id @default(uuid()) @unique
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  permissions String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Bio {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id])
+  content     String   @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Subject {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  students    StudentProfile[]
+  tutors      TutorProfile[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Address {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id])
+  city        String?
+  state       String?
+  country     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  @@map("addresses") // Better table naming
+}
+
+model Rating {
+  id            String      @id @default(uuid())
+  tutorProfile  TutorProfile @relation(fields: [tutorId], references: [id])
+  tutorId       String
+  studentId     String
+  rating        Decimal     @db.Decimal(3, 2)
+  comment       String?     @db.Text
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@unique([tutorId, studentId])
+  @@index([tutorId])
+}
+
+model Friendship {
+  id            String         @id @default(uuid())
+  sender        User           @relation("SentFriendRequests", fields: [senderId], references: [id])
+  senderId      String
+  receiver      User           @relation("ReceivedFriendRequests", fields: [receiverId], references: [id])
+  receiverId    String
+  status        FriendStatus   @default(PENDING)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  @@unique([senderId, receiverId])
+  @@index([senderId])
+  @@index([receiverId])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  expires   DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+
+  @@index([userId])
+  @@index([token])
+  @@index([expires])
+}
+
+model Session {
+    sid    String   @id
+    sess   Json     
+    expire DateTime
+    
+    @@map("session")
+}
+
+enum UserRole {
+  TUTOR
+  ADMIN
+  MODERATOR
+  STUDENT
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  BANNED
+}
+
+enum FriendStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  BLOCKED
 }
