@@ -29,7 +29,7 @@ const userServices = {
 						surname,
 						email,
 						password: hashedPassword,
-						role,
+						role: role.toUpperCase(),
 					},
 				});
 
