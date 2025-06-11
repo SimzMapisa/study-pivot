@@ -133,7 +133,11 @@ const authServices = {
 
 	confirmResetPassword: async (req) => {
 		try {
-			const { token, password } = req.body;
+			const { token, password, confirmPassword } = req.body;
+
+			if (confirmPassword !== password) {
+				throw { status: 400, message: 'Passwords do not match' };
+			}
 
 			if (!token || !password) {
 				throw { status: 400, message: 'Token and password are required' };
