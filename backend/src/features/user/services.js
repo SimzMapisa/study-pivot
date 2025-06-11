@@ -9,6 +9,20 @@ import passwordUtil from '../../common/utils/password.js';
  * @module userServices
  */
 const userServices = {
+	/**
+	 * Uses Prisma ORM transactions to create a new user and their profile based on their roles.
+	 * Creates a new user with the provided details from the req body.
+	 * If a user with the same email already exists, it returns an error.
+	 * The user's password is hashed before storing it in the database.
+	 *
+	 * @param {string} name - The name of the user.
+	 * @param {string} surname - The surname of the user.
+	 * @param {string} email - The email of the user.
+	 * @param {string} password - The password of the user.
+	 * @param {string} role - The role of the user (e.g., STUDENT, TUTOR, ADMIN).
+	 * @returns {Promise<Object>} The created user object or an error message if the user already exists.
+	 * @throws {Error} If an error occurs during user creation or if the role is invalid.
+	 */
 	createUser: async (name, surname, email, password, role) => {
 		try {
 			const existingUser = await prisma.user.findUnique({
@@ -35,25 +49,41 @@ const userServices = {
 
 				logInfo('User created successfully:', newUser);
 
-				// Create corresponding profile based on role
-				if (newUser.role === 'STUDENT') {
-					await tx.studentProfile.create({
-						data: {
-							userId: newUser.id,
+				const adminCount = await tx.adminProfile.count({
+					where: {
+						user: {
+							role: 'ADMIN',
 						},
-					});
-				} else if (newUser.role === 'TUTOR') {
-					await tx.tutorProfile.create({
-						data: {
-							userId: newUser.id,
-						},
-					});
-				} else if (newUser.role === 'ADMIN') {
-					await tx.adminProfile.create({
-						data: {
-							userId: newUser.id,
-						},
-					});
+					},
+				});
+
+				switch (newUser.role) {
+					case 'STUDENT':
+						await tx.studentProfile.create({
+							data: {
+								userId: newUser.id,
+							},
+						});
+						break;
+
+					case 'TUTOR':
+						await tx.tutorProfile.create({
+							data: {
+								userId: newUser.id,
+							},
+						});
+						break;
+					case 'ADMIN':
+						await tx.adminProfile.create({
+							data: {
+								userId: newUser.id,
+								permissions: adminCount === 0 ? ['super_admin'] : [],
+							},
+						});
+						break;
+					default:
+						logError('Invalid user role:', newUser.role);
+						throw new Error('Invalid user role');
 				}
 
 				return newUser;

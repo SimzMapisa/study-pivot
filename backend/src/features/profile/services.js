@@ -25,7 +25,6 @@ const profileServices = {
 				throw { status: 404, message: 'User not found' };
 			}
 
-			// Get role-specific profile
 			let profileData = null;
 			let bioData = await prisma.bio.findUnique({
 				where: { userId },
@@ -35,6 +34,7 @@ const profileServices = {
 				},
 			});
 
+			// Get role-specific profile
 			switch (user.role) {
 				case 'ADMIN':
 					profileData = await prisma.adminProfile.findUnique({
