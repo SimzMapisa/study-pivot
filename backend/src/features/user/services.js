@@ -35,25 +35,32 @@ const userServices = {
 
 				logInfo('User created successfully:', newUser);
 
-				// Create corresponding profile based on role
-				if (newUser.role === 'STUDENT') {
-					await tx.studentProfile.create({
-						data: {
-							userId: newUser.id,
-						},
-					});
-				} else if (newUser.role === 'TUTOR') {
-					await tx.tutorProfile.create({
-						data: {
-							userId: newUser.id,
-						},
-					});
-				} else if (newUser.role === 'ADMIN') {
-					await tx.adminProfile.create({
-						data: {
-							userId: newUser.id,
-						},
-					});
+				switch (newUser.role) {
+					case 'STUDENT':
+						await tx.studentProfile.create({
+							data: {
+								userId: newUser.id,
+							},
+						});
+						break;
+
+					case 'TUTOR':
+						await tx.tutorProfile.create({
+							data: {
+								userId: newUser.id,
+							},
+						});
+						break;
+					case 'ADMIN':
+						await tx.adminProfile.create({
+							data: {
+								userId: newUser.id,
+							},
+						});
+						break;
+					default:
+						logError('Invalid user role:', newUser.role);
+						throw new Error('Invalid user role');
 				}
 
 				return newUser;
