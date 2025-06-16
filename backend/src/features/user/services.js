@@ -28,7 +28,7 @@ const userServices = {
 			const existingUser = await prisma.user.findUnique({
 				where: { email },
 			});
-			if (existingUser) {
+			if (existingUser && existingUser.email === email) {
 				return { error: 'User with this email already exists' };
 			}
 
@@ -102,7 +102,7 @@ const userServices = {
 			const users = await prisma.user.findMany();
 			return users;
 		} catch (error) {
-			console.error('Error fetching users:', error);
+			logError('Error fetching users:', error);
 			throw new Error('Internal Server Error');
 		}
 	},

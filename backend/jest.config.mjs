@@ -18,13 +18,13 @@ const config = {
 	clearMocks: true,
 
 	// Indicates whether the coverage information should be collected while executing the test
-	collectCoverage: true,
+	// collectCoverage: false,
 
 	// An array of glob patterns indicating a set of files for which coverage information should be collected
 	// collectCoverageFrom: undefined,
 
 	// The directory where Jest should output its coverage files
-	coverageDirectory: 'coverage',
+	// coverageDirectory: undefined,
 
 	// An array of regexp pattern strings used to skip coverage collection
 	// coveragePathIgnorePatterns: [
@@ -77,18 +77,7 @@ const config = {
 	// ],
 
 	// An array of file extensions your modules use
-	moduleFileExtensions: [
-		'js',
-		// "mjs",
-		// "cjs",
-		// "jsx",
-		// "ts",
-		// "mts",
-		// "cts",
-		// "tsx",
-		// "json",
-		// "node"
-	],
+	moduleFileExtensions: ['js'],
 
 	// A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
 	// moduleNameMapper: {},
@@ -176,7 +165,9 @@ const config = {
 	// testRunner: "jest-circus/runner",
 
 	// A map from regular expressions to paths to transformers
-	// transform: undefined,
+	transform: {
+		'^.+\\.m?js$': 'babel-jest',
+	},
 
 	// An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
 	// transformIgnorePatterns: [
