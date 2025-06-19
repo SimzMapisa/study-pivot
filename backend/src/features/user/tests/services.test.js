@@ -2,7 +2,7 @@ import { it } from '@jest/globals';
 import { mockDeep } from 'jest-mock-extended';
 import prisma from '../../../common/config/db.js';
 import passwordUtil from '../../../common/utils/password.js';
-import userServices from '../services';
+import userServices from '../services.js';
 
 jest.mock('../../../common/config/db.js', () => ({
 	__esModule: true,
